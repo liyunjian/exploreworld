@@ -1,0 +1,47 @@
+{
+  "metrics": {
+    "calculation_time": "2025-09-27T17:24:21.273598",
+    "total_files": 2,
+    "total_points": 38951,
+    "unique_points": 20668,
+    "grid_cells": 20374,
+    "grid_size_meters": 50,
+    "explored_area_km2": 50.935,
+    "earth_percentage": 9.985845136e-06,
+    "calculation_method": "grid_based",
+    "files": [
+      "1.gpx",
+      "land.gpx"
+    ]
+  },
+  "tracks": {
+    "other": {
+      "points": {
+        "type": "FeatureCollection",
+        "features": []
+      },
+      "lines": {
+        "type": "FeatureCollection",
+        "features": []
+      },
+      "files": [],
+      "color": "#f59e0b",
+      "display_type": "lines",
+      "points_count": 0,
+      "lines_count": 0
+    }
+  },
+  "bounds": {
+    "min_lng": -246.75198,
+    "max_lng": 241.83801,
+    "min_lat": 23.03105,
+    "max_lat": 45.11667
+  },
+  "generated_at": "2025-09-27T17:24:23.678485",
+  "version": "2.2",
+  "chunk_info": {
+    "chunk_id": 3,
+    "track_type": "other",
+    "is_chunk": true
+  }
+}

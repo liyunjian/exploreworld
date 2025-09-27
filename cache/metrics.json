@@ -1,0 +1,15 @@
+{
+  "calculation_time": "2025-09-27T17:24:21.273598",
+  "total_files": 2,
+  "total_points": 38951,
+  "unique_points": 20668,
+  "grid_cells": 20374,
+  "grid_size_meters": 50,
+  "explored_area_km2": 50.935,
+  "earth_percentage": 9.985845136e-06,
+  "calculation_method": "grid_based",
+  "files": [
+    "1.gpx",
+    "land.gpx"
+  ]
+}

@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPX轨迹探索地图</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        #map { 
+            width: 100vw; 
+            height: 100vh; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
+        #legend-card {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            background: linear-gradient(145deg, rgba(30, 30, 35, 0.85) 0%, rgba(15, 15, 20, 0.9) 100%);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 
+                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            padding: 12px 24px 14px 24px;
+            max-width: 96vw;
+            min-width: 420px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        
+        #legend-card:hover {
+            transform: translateX(-50%) translateY(-4px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4),
+                        0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+                        0 0 60px rgba(118, 56, 255, 0.3);
+        }
+        
+        #legend-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #e5e7eb;
+            letter-spacing: -0.01em;
+            line-height: 0.9;
+            margin-bottom: 8px;
+            text-align: center;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        
+        #legend-title span {
+            font-weight: 700;
+            font-size: 1.15em;
+            background: linear-gradient(90deg, #818cf8, #c084fc, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-flow 5s ease infinite;
+            background-size: 200% auto;
+        }
+        
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        #legend {
+            width: 100%;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: nowrap;
+        }
+        
+        #legend span {
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 500;
+            color: #d1d5db;
+            flex: 0 0 auto;
+        }
+        
+        /* 返回主页按钮样式 */
+        #home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 15;
+            background: linear-gradient(145deg, rgba(30, 30, 35, 0.9) 0%, rgba(15, 15, 20, 0.95) 100%);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px 12px;
+            text-decoration: none;
+            color: #e5e7eb;
+            font-size: 12px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            text-align: center;
+        }
+        
+        #home-button:hover {
+            transform: translateY(-2px) scale(1.05);
+            background: linear-gradient(145deg, rgba(40, 40, 50, 0.95) 0%, rgba(25, 25, 35, 1) 100%);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4),
+                        0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+                        0 0 30px rgba(99, 102, 241, 0.3);
+            color: #ffffff;
+        }
+        
+        #home-button:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+        
+        #home-button::before {
+            content: "🏠";
+            font-size: 18px;
+            line-height: 1;
+        }
+        
+        #legend span:hover {
+            color: #fff;
+            text-shadow: 0 0 8px rgba(255,255,255,0.5);
+        }
+        
+        #legend span > span {
+            width: 18px;
+            height: 4px;
+            border-radius: 2px;
+            margin-right: 8px;
+            display: inline-block;
+            box-shadow: 0 0 8px 1px var(--glow-color, transparent), 
+                        0 0 4px var(--glow-color-2, transparent);
+            transition: all 0.3s ease;
+        }
+        
+        #legend span:hover > span {
+            transform: scale(1.1);
+            filter: brightness(1.2);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 900px) and (min-width: 601px) {
+            #legend-card {
+                min-width: 340px;
+                padding: 8px 16px 10px 16px;
+                border-radius: 14px;
+            }
+            #legend-title {
+                font-size: 1.2em;
+                margin-bottom: 6px;
+            }
+            #legend {
+                gap: 16px;
+            }
+            #legend span {
+                font-size: 13px;
+            }
+            #legend span > span {
+                width: 16px;
+                height: 4px;
+                margin-right: 8px;
+                display: inline-block;
+            }
+            
+            /* 中等屏幕上返回主页按钮稍微缩小 */
+            #home-button {
+                padding: 6px 10px;
+                font-size: 11px;
+            }
+            
+            #home-button::before {
+                font-size: 16px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            #legend-card {
+                min-width: 280px;
+                padding: 6px 10px 8px 10px;
+                border-radius: 12px;
+                margin: 0 8px;
+            }
+            #legend-title {
+                font-size: 1.0em;
+                margin-bottom: 4px;
+            }
+            #legend {
+                gap: 12px;
+                flex-wrap: nowrap;
+            }
+            #legend span {
+                font-size: 11px;
+                display: flex;
+                align-items: center;
+            }
+            #legend span > span {
+                width: 14px;
+                height: 3px;
+                margin-right: 6px;
+                display: inline-block;
+                flex-shrink: 0;
+            }
+            
+            /* 手机上返回主页按钮显著缩小 */
+            #home-button {
+                top: 20px;
+                left: 8px;
+                padding: 5px 8px;
+                font-size: 10px;
+                border-radius: 8px;
+                gap: 2px;
+            }
+            
+            #home-button::before {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 返回主页按钮 -->
+    <a href="https://www.liyunjian.com" id="home-button" target="_blank">返回主页</a>
+    
+    <div id="legend-card">
+        <div id="legend-title">
+            人生已探索地面<span style="color:#f59e0b;">计算中...</span>
+            <div style="font-size:0.9em;font-weight:400;color:#9ca3af;margin-top:3px;text-shadow:none;">正在分析轨迹数据</div>
+        </div>
+        <div id="legend">
+            <span style="--glow-color: rgba(239, 68, 68, 0.7); --glow-color-2: rgba(239, 68, 68, 0.5);"><span style="background:#ef4444;"></span>Road</span>
+            <span style="--glow-color: rgba(16, 185, 129, 0.7); --glow-color-2: rgba(16, 185, 129, 0.5);"><span style="background:#10b981;"></span>Train</span>
+            <span style="--glow-color: rgba(59, 130, 246, 0.7); --glow-color-2: rgba(59, 130, 246, 0.5);"><span style="background:#3b82f6;"></span>Plane</span>
+            <span style="--glow-color: rgba(245, 158, 11, 0.7); --glow-color-2: rgba(245, 158, 11, 0.5);"><span style="background:#f59e0b;"></span>Other</span>
+        </div>
+    </div>
+    
+    <div id="map"></div>
+    
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <script>
+        // 配置常量
+        const CHINA_CENTER = [104.066, 35.86]; // 中国几何中心坐标
+        const DEFAULT_ZOOM = 4; // 初始缩放级别
+        const TARGET_ZOOM = 2; // 目标缩放级别（全球视图）
+        
+        /**
+         * 从JSON缓存加载指标数据
+         */
+        async function loadMetrics() {
+            console.log('正在从缓存加载计算结果...');
+            
+            try {
+                const response = await fetch(`cache/metrics.json?t=${Date.now()}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP错误: ${response.status} - ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                
+                // 验证数据格式
+                if (typeof data.explored_area_km2 === 'undefined' || 
+                    typeof data.earth_percentage === 'undefined') {
+                    throw new Error('缓存数据格式不正确');
+                }
+
+                console.log('成功加载计算结果:', data);
+                
+                return {
+                    exploredArea: data.explored_area_km2,
+                    percentage: data.earth_percentage,
+                    totalFiles: data.total_files,
+                    totalPoints: data.total_points,
+                    uniquePoints: data.unique_points,
+                    calculationTime: data.calculation_time,
+                    files: data.files
+                };
+
+            } catch (error) {
+                console.error('加载缓存失败:', error);
+                
+                let errorMessage;
+                if (error.message.includes('404') || error.message.includes('HTTP错误')) {
+                    errorMessage = '缓存文件不存在，请先运行 calculate_metrics.py 生成缓存';
+                } else if (error.message.includes('格式不正确')) {
+                    errorMessage = '缓存文件格式错误，请重新生成缓存';
+                } else {
+                    errorMessage = '加载缓存时发生未知错误: ' + error.message;
+                }
+                
+                return {
+                    exploredArea: 0,
+                    percentage: 0,
+                    totalFiles: 0,
+                    totalPoints: 0,
+                    uniquePoints: 0,
+                    calculationTime: null,
+                    files: [],
+                    error: errorMessage
+                };
+            }
+        }
+
+        /**
+         * 从JSON缓存加载轨迹数据（支持静态配置）
+         */
+        async function loadTracksData() {
+            console.log('正在从缓存加载轨迹数据...');
+
+            try {
+                // 先加载静态配置文件，确定数据结构
+                console.log('正在读取静态配置文件...');
+                const configResponse = await fetch(`cache/data_config.json?t=${Date.now()}`);
+                
+                if (!configResponse.ok) {
+                    throw new Error(`配置文件加载失败: ${configResponse.status}`);
+                }
+
+                const config = await configResponse.json();
+                console.log('配置文件加载成功:', config);
+
+                if (config.data_type === 'single') {
+                    // 单个文件模式
+                    console.log('检测到单个文件模式...');
+                    const response = await fetch(`cache/${config.single_file}?t=${Date.now()}`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`数据文件加载失败: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    console.log('成功加载单个轨迹文件:', {
+                        trackTypes: Object.keys(data.tracks),
+                        totalTracks: Object.values(data.tracks).reduce((sum, track) => sum + (track.points_count || 0), 0),
+                        bounds: data.bounds
+                    });
+                    
+                    return data;
+                    
+                } else if (config.data_type === 'chunked') {
+                    // 分片文件模式
+                    console.log(`检测到分片文件模式，共 ${config.chunks.length} 个分片...`);
+
+                    // 并行加载所有分片
+                    const chunkPromises = config.chunks.map(async (chunkFile) => {
+                        const chunkResponse = await fetch(`cache/${chunkFile}?t=${Date.now()}`);
+                        if (!chunkResponse.ok) {
+                            throw new Error(`分片文件加载失败: ${chunkFile}`);
+                        }
+                        return await chunkResponse.json();
+                    });
+
+                    const chunks = await Promise.all(chunkPromises);
+                    console.log('所有分片加载完成，开始合并数据...');
+
+                    // 合并分片数据
+                    const mergedData = {
+                        metrics: chunks[0].metrics,
+                        tracks: {},
+                        bounds: chunks[0].bounds,
+                        generated_at: chunks[0].generated_at,
+                        version: chunks[0].version,
+                        chunked: true,
+                        total_chunks: chunks.length
+                    };
+
+                    // 合并各个轨迹类型的数据
+                    for (const chunk of chunks) {
+                        Object.keys(chunk.tracks).forEach(trackType => {
+                            mergedData.tracks[trackType] = chunk.tracks[trackType];
+                        });
+                    }
+
+                    console.log('成功合并分片数据:', {
+                        trackTypes: Object.keys(mergedData.tracks),
+                        totalTracks: Object.values(mergedData.tracks).reduce((sum, track) => sum + (track.points_count || 0), 0),
+                        bounds: mergedData.bounds,
+                        totalChunks: mergedData.total_chunks
+                    });
+                    
+                    return mergedData;
+                    
+                } else {
+                    throw new Error(`未知的数据类型: ${config.data_type}`);
+                }
+
+            } catch (error) {
+                console.error('加载轨迹数据失败:', error);
+                return null;
+            }
+        }
+        
+        /**
+         * 更新图例标题显示
+         */
+        function updateLegendTitle(metrics) {
+            const titleEl = document.querySelector('#legend-title');
+            if (!titleEl) return;
+            
+            const spanEl = titleEl.querySelector('span');
+            const divEl = titleEl.querySelector('div');
+            
+            if (metrics.error) {
+                spanEl.innerHTML = '<span style="color:#ef4444;">未找到缓存</span>';
+                divEl.innerHTML = `<small style="color:#94a3b8;">${metrics.error}</small>`;
+            } else {
+                spanEl.textContent = `${metrics.exploredArea.toFixed(6)}km²`;
+                divEl.textContent = `是地球的${metrics.percentage.toFixed(15)}%`;
+                
+                // 在控制台显示详细信息
+                if (metrics.totalFiles) {
+                    console.log('📊 探索数据详情:');
+                    console.log(`   文件数量: ${metrics.totalFiles}`);
+                    console.log(`   总轨迹点: ${metrics.totalPoints}`);
+                    console.log(`   去重后: ${metrics.uniquePoints}`);
+                    console.log(`   计算时间: ${metrics.calculationTime || '未知'}`);
+                }
+            }
+        }
+        
+        /**
+         * 根据轨迹范围计算合适的缩放级别
+         */
+        function calculateZoomLevel(bounds) {
+            const lngSpan = bounds.max_lng - bounds.min_lng;
+            const latSpan = bounds.max_lat - bounds.min_lat;
+            const maxSpan = Math.max(lngSpan, latSpan);
+            
+            if (maxSpan > 40) return 2.5;      // 跨洲际轨迹
+            else if (maxSpan > 30) return 3.0; // 跨国轨迹  
+            else if (maxSpan > 20) return 3.5; // 大范围国内轨迹
+            else if (maxSpan > 10) return 4.2; // 中范围轨迹
+            else if (maxSpan > 5) return 5.0;  // 小范围轨迹
+            else return 6.0;                   // 本地轨迹
+        }
+        
+        /**
+         * 渲染轨迹数据到地图
+         */
+        function renderTracks(map, tracksData) {
+            console.log('开始渲染轨迹...');
+            
+            Object.entries(tracksData.tracks).forEach(([trackType, trackData]) => {
+                if (!trackData.files || trackData.files.length === 0) {
+                    console.log(`跳过 ${trackType}: 无数据`);
+                    return;
+                }
+
+                console.log(`渲染 ${trackType}: ${trackData.points_count || 0} 个点, ${trackData.lines_count || 0} 条线`);
+
+                const color = trackData.color;
+                const displayType = trackData.display_type;
+
+                if (displayType === 'points' && trackData.points.features.length > 0) {
+                    // 添加点数据源和图层
+                    map.addSource(`${trackType}-points`, {
+                        type: 'geojson',
+                        data: trackData.points
+                    });
+                    
+                    map.addLayer({
+                        id: `${trackType}-points-layer`,
+                        type: 'circle',
+                        source: `${trackType}-points`,
+                        paint: {
+                            'circle-radius': [
+                                'interpolate', ['linear'], ['zoom'],
+                                2, 1,
+                                12, 2,
+                                18, 5
+                            ],
+                            'circle-color': color,
+                            'circle-opacity': 0.8
+                        }
+                    });
+                    
+                } else if (displayType === 'lines' && trackData.lines.features.length > 0) {
+                    // 添加线数据源和图层
+                    map.addSource(`${trackType}-lines`, {
+                        type: 'geojson',
+                        data: trackData.lines,
+                        lineMetrics: true // 启用线段指标，有助于跨日界线渲染
+                    });
+                    
+                    map.addLayer({
+                        id: `${trackType}-lines-layer`,
+                        type: 'line',
+                        source: `${trackType}-lines`,
+                        layout: {
+                            'line-join': 'round',
+                            'line-cap': 'round'
+                        },
+                        paint: {
+                            'line-color': color,
+                            'line-width': [
+                                'interpolate', ['linear'], ['zoom'],
+                                2, 1,
+                                8, 2,
+                                12, 3
+                            ],
+                            'line-opacity': 0.9
+                        }
+                    });
+                }
+            });
+            
+            console.log('✅ 轨迹渲染完成');
+        }
+        
+        /**
+         * 调整地图视图到合适位置
+         */
+        function adjustMapView(map, tracksData) {
+            // 执行缩放动画，从4到2，但保持中心位置不变
+            console.log('执行缩放动画：从级别4到级别2，保持中国居中');
+            setTimeout(() => {
+                map.flyTo({
+                    center: CHINA_CENTER,  // 保持中心位置不变
+                    zoom: TARGET_ZOOM,     // 缩放到全球视图
+                    duration: 1000,        // 2秒动画时长
+                    curve: 0.2,              // 线性缩放曲线
+                    easing: (t) => t       // 线性缓动，避免转动效果
+                });
+            }, 30);
+        }
+
+        // 初始化地图
+        mapboxgl.accessToken = '';
+        
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/yunjian/cmfxy24sw000j01s7354u3hqh',
+            center: CHINA_CENTER,
+            zoom: DEFAULT_ZOOM,
+            minZoom: 2,    // 可以缩小到全球视图
+            maxZoom: 12    // 限制最大放大倍数
+        });
+
+        // 地图加载完成后的处理
+        map.on('load', function() {
+            // 并行加载数据
+            Promise.all([
+                loadMetrics(),
+                loadTracksData()
+            ]).then(([metrics, tracksData]) => {
+                // 更新UI显示
+                updateLegendTitle(metrics);
+                
+                // 渲染轨迹数据
+                if (tracksData) {
+                    renderTracks(map, tracksData);
+                }
+                
+                // 调整地图视图
+                adjustMapView(map, tracksData);
+                
+            }).catch(error => {
+                console.error('数据加载失败:', error);
+                
+                // 显示错误状态
+                const titleEl = document.querySelector('#legend-title');
+                if (titleEl) {
+                    titleEl.querySelector('span').innerHTML = '<span style="color:#ef4444;">加载失败</span>';
+                    titleEl.querySelector('div').textContent = '请检查网络连接';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

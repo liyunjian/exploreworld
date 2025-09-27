@@ -1,0 +1,12 @@
+{
+  "data_type": "chunked",
+  "chunks": [
+    "tracks_data_chunk_0_road.json",
+    "tracks_data_chunk_1_train.json",
+    "tracks_data_chunk_2_plane.json",
+    "tracks_data_chunk_3_other.json"
+  ],
+  "index_file": "tracks_data_index.json",
+  "total_size_mb": 28.12828826904297,
+  "generated_at": "2025-09-27T17:24:23.678485"
+}

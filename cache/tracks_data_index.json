@@ -1,0 +1,32 @@
+{
+  "total_size_mb": 28.12828826904297,
+  "chunks": [
+    {
+      "file": "tracks_data_chunk_0_road.json",
+      "size_mb": 9.605751991271973,
+      "track_type": "road",
+      "chunk_id": 0
+    },
+    {
+      "file": "tracks_data_chunk_1_train.json",
+      "size_mb": 1.8613529205322266,
+      "track_type": "train",
+      "chunk_id": 1
+    },
+    {
+      "file": "tracks_data_chunk_2_plane.json",
+      "size_mb": 16.66224193572998,
+      "track_type": "plane",
+      "chunk_id": 2
+    },
+    {
+      "file": "tracks_data_chunk_3_other.json",
+      "size_mb": 0.0009431838989257812,
+      "track_type": "other",
+      "chunk_id": 3
+    }
+  ],
+  "generated_at": "2025-09-27T17:24:23.678485",
+  "version": "2.2",
+  "is_chunked": true
+}
