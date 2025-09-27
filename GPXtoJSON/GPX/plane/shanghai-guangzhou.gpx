@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.0" creator="GPSBabel - https://www.gpsbabel.org" xmlns="http://www.topografix.com/GPX/1/0">
+  <time>2025-09-25T13:11:22.799Z</time>
+  <bounds minlat="23.031050000" minlon="113.271990000" maxlat="31.197875000" maxlon="121.336319000"/>
+  <wpt lat="31.197875000" lon="121.336319000">
+    <ele>0.000</ele>
+    <name>ZSSS Airport</name>
+    <cmt>Shanghai Hongqiao Int'l &lt;br&gt; 上海 上海虹桥 CN&lt;br&gt;&lt;br&gt;&lt;a href='http://www.flightaware.com/live/airport/ZSSS'&gt;ZSSS airport activity (live)&lt;/a&gt;&lt;br&gt;&lt;a href='http://www.flightaware.com/resources/airport/ZSSS'&gt;ZSSS airport information&lt;/a&gt;</cmt>
+    <desc>Shanghai Hongqiao Int'l &lt;br&gt; 上海 上海虹桥 CN&lt;br&gt;&lt;br&gt;&lt;a href='http://www.flightaware.com/live/airport/ZSSS'&gt;ZSSS airport activity (live)&lt;/a&gt;&lt;br&gt;&lt;a href='http://www.flightaware.com/resources/airport/ZSSS'&gt;ZSSS airport information&lt;/a&gt;</desc>
+  </wpt>
+  <wpt lat="23.392436000" lon="113.298786000">
+    <ele>0.000</ele>
+    <name>ZGGG Airport</name>
+    <cmt>廣州白雲國際機場 &lt;br&gt; 广东 广州 CN&lt;br&gt;&lt;br&gt;&lt;a href='http://www.flightaware.com/live/airport/ZGGG'&gt;ZGGG airport activity (live)&lt;/a&gt;&lt;br&gt;&lt;a href='http://www.flightaware.com/resources/airport/ZGGG'&gt;ZGGG airport information&lt;/a&gt;</cmt>
+    <desc>廣州白雲國際機場 &lt;br&gt; 广东 广州 CN&lt;br&gt;&lt;br&gt;&lt;a href='http://www.flightaware.com/live/airport/ZGGG'&gt;ZGGG airport activity (live)&lt;/a&gt;&lt;br&gt;&lt;a href='http://www.flightaware.com/resources/airport/ZGGG'&gt;ZGGG airport information&lt;/a&gt;</desc>
+  </wpt>
+  <trk>
+    <name>CSN3526</name>
+    <desc>ZSSS - ZGGG</desc>
+    <trkseg>
+      <trkpt lat="31.197875000" lon="121.336319000">
+        <ele>0.000</ele>
+        <time>2025-09-16T10:00:00Z</time>
+      </trkpt>
+      <trkpt lat="31.195000000" lon="121.330000000">
+        <ele>150.000</ele>
+        <time>2025-09-16T10:01:00Z</time>
+      </trkpt>
+      <trkpt lat="31.180000000" lon="121.315000000">
+        <ele>450.000</ele>
+        <time>2025-09-16T10:02:00Z</time>
+      </trkpt>
+      <trkpt lat="31.150000000" lon="121.280000000">
+        <ele>900.000</ele>
+        <time>2025-09-16T10:03:00Z</time>
+      </trkpt>
+      <trkpt lat="31.100000000" lon="121.220000000">
+        <ele>1500.000</ele>
+        <time>2025-09-16T10:04:00Z</time>
+      </trkpt>
+      <trkpt lat="31.020000000" lon="121.120000000">
+        <ele>2500.000</ele>
+        <time>2025-09-16T10:05:30Z</time>
+      </trkpt>
+      <trkpt lat="30.900000000" lon="120.950000000">
+        <ele>4000.000</ele>
+        <time>2025-09-16T10:07:00Z</time>
+      </trkpt>
+      <trkpt lat="30.750000000" lon="120.720000000">
+        <ele>6000.000</ele>
+        <time>2025-09-16T10:08:30Z</time>
+      </trkpt>
+      <trkpt lat="30.550000000" lon="120.400000000">
+        <ele>8000.000</ele>
+        <time>2025-09-16T10:10:00Z</time>
+      </trkpt>
+      <trkpt lat="30.200000000" lon="119.900000000">
+        <ele>9500.000</ele>
+        <time>2025-09-16T10:11:30Z</time>
+      </trkpt>
+      <trkpt lat="29.489140000" lon="119.308250000">
+        <ele>9776.000</ele>
+        <time>2025-09-16T10:12:11Z</time>
+      </trkpt>
+      <trkpt lat="29.361420000" lon="119.146090000">
+        <ele>9776.000</ele>
+        <time>2025-09-16T10:13:35Z</time>
+      </trkpt>
+      <trkpt lat="29.307520000" lon="119.078010000">
+        <ele>9776.000</ele>
+        <time>2025-09-16T10:14:10Z</time>
+      </trkpt>
+      <trkpt lat="29.239460000" lon="118.989900000">
+        <ele>9776.000</ele>
+        <time>2025-09-16T10:14:55Z</time>
+      </trkpt>
+      <trkpt lat="29.199190000" lon="118.874340000">
+        <ele>9784.000</ele>
+        <time>2025-09-16T10:15:42Z</time>
+      </trkpt>
+      <trkpt lat="29.081970000" lon="118.652990000">
+        <ele>9784.000</ele>
+        <time>2025-09-16T10:17:22Z</time>
+      </trkpt>
+      <trkpt lat="28.109390000" lon="117.471680000">
+        <ele>10996.000</ele>
+        <time>2025-09-16T10:27:52Z</time>
+      </trkpt>
+      <trkpt lat="27.965000000" lon="117.305230000">
+        <ele>11003.000</ele>
+        <time>2025-09-16T10:29:23Z</time>
+      </trkpt>
+      <trkpt lat="27.933580000" lon="117.280900000">
+        <ele>10996.000</ele>
+        <time>2025-09-16T10:29:41Z</time>
+      </trkpt>
+      <trkpt lat="27.871350000" lon="117.253920000">
+        <ele>11003.000</ele>
+        <time>2025-09-16T10:30:11Z</time>
+      </trkpt>
+      <trkpt lat="27.792290000" lon="117.221960000">
+        <ele>10996.000</ele>
+        <time>2025-09-16T10:30:48Z</time>
+      </trkpt>
+      <trkpt lat="27.754860000" lon="117.192480000">
+        <ele>11003.000</ele>
+        <time>2025-09-16T10:31:09Z</time>
+      </trkpt>
+      <trkpt lat="27.669390000" lon="117.094980000">
+        <ele>11003.000</ele>
+        <time>2025-09-16T10:32:02Z</time>
+      </trkpt>
+      <trkpt lat="27.581860000" lon="116.993410000">
+        <ele>10996.000</ele>
+        <time>2025-09-16T10:32:59Z</time>
+      </trkpt>
+      <trkpt lat="27.534710000" lon="116.938940000">
+        <ele>11003.000</ele>
+        <time>2025-09-16T10:33:29Z</time>
+      </trkpt>
+      <trkpt lat="27.484680000" lon="116.880540000">
+        <ele>11003.000</ele>
+        <time>2025-09-16T10:34:01Z</time>
+      </trkpt>
+      <trkpt lat="27.390690000" lon="116.770620000">
+        <ele>10996.000</ele>
+        <time>2025-09-16T10:35:01Z</time>
+      </trkpt>
+      <trkpt lat="27.100750000" lon="116.428030000">
+        <ele>11003.000</ele>
+        <time>2025-09-16T10:38:07Z</time>
+      </trkpt>
+      <trkpt lat="26.962170000" lon="116.260490000">
+        <ele>11003.000</ele>
+        <time>2025-09-16T10:39:38Z</time>
+      </trkpt>
+      <trkpt lat="26.914950000" lon="116.203640000">
+        <ele>11003.000</ele>
+        <time>2025-09-16T10:40:10Z</time>
+      </trkpt>
+      <trkpt lat="26.862640000" lon="116.140700000">
+        <ele>11003.000</ele>
+        <time>2025-09-16T10:40:43Z</time>
+      </trkpt>
+      <trkpt lat="26.819000000" lon="116.078330000">
+        <ele>10958.000</ele>
+        <time>2025-09-16T10:41:15Z</time>
+      </trkpt>
+      <trkpt lat="23.451850000" lon="113.424430000">
+        <ele>2431.000</ele>
+        <time>2025-09-16T11:25:02Z</time>
+      </trkpt>
+      <trkpt lat="23.348370000" lon="113.402680000">
+        <ele>2431.000</ele>
+        <time>2025-09-16T11:26:28Z</time>
+      </trkpt>
+      <trkpt lat="23.326020000" lon="113.396710000">
+        <ele>2431.000</ele>
+        <time>2025-09-16T11:26:47Z</time>
+      </trkpt>
+      <trkpt lat="23.289340000" lon="113.386790000">
+        <ele>2316.000</ele>
+        <time>2025-09-16T11:27:18Z</time>
+      </trkpt>
+      <trkpt lat="23.255450000" lon="113.377660000">
+        <ele>2202.000</ele>
+        <time>2025-09-16T11:27:49Z</time>
+      </trkpt>
+      <trkpt lat="23.233570000" lon="113.371790000">
+        <ele>2126.000</ele>
+        <time>2025-09-16T11:28:09Z</time>
+      </trkpt>
+      <trkpt lat="23.201120000" lon="113.363040000">
+        <ele>2035.000</ele>
+        <time>2025-09-16T11:28:39Z</time>
+      </trkpt>
+      <trkpt lat="23.171330000" lon="113.354850000">
+        <ele>1935.000</ele>
+        <time>2025-09-16T11:29:09Z</time>
+      </trkpt>
+      <trkpt lat="23.140590000" lon="113.346650000">
+        <ele>1829.000</ele>
+        <time>2025-09-16T11:29:42Z</time>
+      </trkpt>
+      <trkpt lat="23.100910000" lon="113.336010000">
+        <ele>1623.000</ele>
+        <time>2025-09-16T11:30:25Z</time>
+      </trkpt>
+      <trkpt lat="23.082790000" lon="113.331100000">
+        <ele>1524.000</ele>
+        <time>2025-09-16T11:30:45Z</time>
+      </trkpt>
+      <trkpt lat="23.047620000" lon="113.321630000">
+        <ele>1326.000</ele>
+        <time>2025-09-16T11:31:23Z</time>
+      </trkpt>
+      <trkpt lat="23.031050000" lon="113.271990000">
+        <ele>1036.000</ele>
+        <time>2025-09-16T11:32:23Z</time>
+      </trkpt>
+    </trkseg>
+  </trk>
+</gpx>
