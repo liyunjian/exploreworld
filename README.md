@@ -1,12 +1,14 @@
-# exploreworld
+# exploreworld足迹展示
 
 演示页面：
 
 https://ex-cat.pages.dev/
 
-足迹展示网页，模仿一生足迹APP。
+https://e.liyunjian.dpdns.org
 
-GPXtoJSON是GPX转成JSON的python程序
+足迹展示网页，模仿一生足迹APP的展示形式。
+
+GPXtoJSON是GPX转成GEOJSON的python程序。
 
 运行之后会生成cache文件夹
 
@@ -14,10 +16,8 @@ cache中
 
 ·metrics.json是记录足迹探索面积
 
-·其他的是做了分片的GEOjson（脚本设置了不允许文件大于20MB，因为CF pages最大只能单个文件25MB）
-
-做了索引，是因为CF Pages只能展示静态页面
 
 
+config.js中需要Mapbox的API key用于加载地图。
 
-index.html中需要Mapbox的API key用于加载地图
+
