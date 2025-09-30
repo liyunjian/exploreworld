@@ -1,12 +1,30 @@
 {
   "data_type": "chunked",
   "chunks": [
-    "tracks_data_chunk_0_road.json",
-    "tracks_data_chunk_1_train.json",
-    "tracks_data_chunk_2_plane.json",
-    "tracks_data_chunk_3_other.json"
+    "tracks_data_chunk_001.json.gz",
+    "tracks_data_chunk_002.json.gz",
+    "tracks_data_chunk_003.json.gz",
+    "tracks_data_chunk_004.json.gz",
+    "tracks_data_chunk_005.json.gz",
+    "tracks_data_chunk_006.json.gz",
+    "tracks_data_chunk_007.json.gz",
+    "tracks_data_chunk_008.json.gz",
+    "tracks_data_chunk_009.json.gz",
+    "tracks_data_chunk_010.json.gz",
+    "tracks_data_chunk_011.json.gz",
+    "tracks_data_chunk_012.json.gz",
+    "tracks_data_chunk_013.json.gz",
+    "tracks_data_chunk_014.json.gz",
+    "tracks_data_chunk_015.json.gz",
+    "tracks_data_chunk_016.json.gz",
+    "tracks_data_chunk_017.json.gz",
+    "tracks_data_chunk_018.json.gz",
+    "tracks_data_chunk_019.json.gz"
   ],
-  "index_file": "tracks_data_index.json",
-  "total_size_mb": 28.12828826904297,
-  "generated_at": "2025-09-27T17:24:23.678485"
+  "format": "gzip",
+  "total_chunks": 19,
+  "total_size_mb": 0.34340476989746094,
+  "optimization_level": "high",
+  "chunk_size_mb": 0.02,
+  "generated_at": "2025-09-28T22:40:30.498949"
 }

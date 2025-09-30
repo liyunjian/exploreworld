@@ -28,7 +28,7 @@
         
         #legend-card {
             position: absolute;
-            top: 20px;
+            top: max(20px, env(safe-area-inset-top, 0px) + 10px);
             left: 50%;
             transform: translateX(-50%);
             z-index: 10;
@@ -40,8 +40,8 @@
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 
                         0 0 0 1px rgba(255, 255, 255, 0.05) inset;
             padding: 12px 24px 14px 24px;
-            max-width: 96vw;
-            min-width: 420px;
+            max-width: calc(96vw - 20px);
+            min-width: min(420px, calc(100vw - 40px));
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -103,8 +103,8 @@
         /* 返回主页按钮样式 */
         #home-button {
             position: absolute;
-            top: 20px;
-            left: 20px;
+            top: max(20px, env(safe-area-inset-top, 0px) + 10px);
+            left: max(20px, env(safe-area-inset-left, 0px) + 10px);
             z-index: 15;
             background: linear-gradient(145deg, rgba(30, 30, 35, 0.9) 0%, rgba(15, 15, 20, 0.95) 100%);
             backdrop-filter: blur(16px) saturate(180%);
@@ -170,7 +170,7 @@
         /* 响应式设计 */
         @media (max-width: 900px) and (min-width: 601px) {
             #legend-card {
-                min-width: 340px;
+                min-width: min(340px, calc(100vw - 40px));
                 padding: 8px 16px 10px 16px;
                 border-radius: 14px;
             }
@@ -204,10 +204,10 @@
         
         @media (max-width: 600px) {
             #legend-card {
-                min-width: 280px;
+                min-width: min(280px, calc(100vw - 40px));
                 padding: 6px 10px 8px 10px;
                 border-radius: 12px;
-                margin: 0 8px;
+                margin: 0 10px;
             }
             #legend-title {
                 font-size: 1.0em;
@@ -232,8 +232,8 @@
             
             /* 手机上返回主页按钮显著缩小 */
             #home-button {
-                top: 20px;
-                left: 8px;
+                top: max(15px, env(safe-area-inset-top, 0px) + 5px);
+                left: max(8px, env(safe-area-inset-left, 0px) + 5px);
                 padding: 5px 8px;
                 font-size: 10px;
                 border-radius: 8px;
@@ -244,9 +244,125 @@
                 font-size: 14px;
             }
         }
+
+        /* 加载容器样式 - 移动到右下角并缩小 */
+        #loading-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(145deg, rgba(20, 20, 25, 0.95) 0%, rgba(10, 10, 15, 0.98) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 
+                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            padding: 12px 16px;
+            min-width: 250px;
+            max-width: 300px;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        #loading-container.complete {
+            opacity: 0;
+            transition: opacity 0.5s ease 0.3s;
+        }
+
+        /* 加载进度条样式 - 缩小尺寸 */
+        #loading-progress {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        #loading-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+            background-size: 200% 100%;
+            width: 0%;
+            border-radius: 6px;
+            transition: width 0.3s ease;
+            animation: gradient-shift 2s ease-in-out infinite;
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* 加载状态指示器 - 适配小型进度条 */
+        #loading-status {
+            color: #e5e7eb;
+            font-size: 12px;
+            font-weight: 500;
+            text-align: left;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        #loading-status.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #loading-status .loading-spinner {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border: 1.5px solid rgba(59, 130, 246, 0.3);
+            border-top: 1.5px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 响应式设计：在小屏设备上调整进度条位置 */
+        @media (max-width: 768px) {
+            #loading-container {
+                bottom: 10px;
+                right: 10px;
+                min-width: 200px;
+                max-width: 250px;
+                padding: 10px 12px;
+            }
+            
+            #loading-status {
+                font-size: 11px;
+            }
+            
+            #loading-progress {
+                height: 3px;
+            }
+        }
     </style>
+    <script src="config.js"></script>
 </head>
 <body>
+    <!-- 加载容器 -->
+    <div id="loading-container">
+        <!-- 加载进度条 -->
+        <div id="loading-progress">
+            <div id="loading-progress-bar"></div>
+        </div>
+
+        <!-- 加载状态指示器 -->
+        <div id="loading-status">
+            <span class="loading-spinner"></span>
+            <span id="loading-text">正在加载地图...</span>
+        </div>
+    </div>
+
     <!-- 返回主页按钮 -->
     <a href="https://www.liyunjian.com" id="home-button" target="_blank">返回主页</a>
     
@@ -266,11 +382,51 @@
     <div id="map"></div>
     
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <script src="https://unpkg.com/deck.gl@8.9.0/dist.min.js"></script>
+    <script src="https://unpkg.com/@deck.gl/core@8.9.0/dist.min.js"></script>
+    <script src="https://unpkg.com/@deck.gl/layers@8.9.0/dist.min.js"></script>
+    <script src="https://unpkg.com/@deck.gl/mapbox@8.9.0/dist.min.js"></script>
+    <script src="https://unpkg.com/pako@2.1.0/dist/pako.min.js"></script>
     <script>
         // 配置常量
-        const CHINA_CENTER = [104.066, 35.86]; // 中国几何中心坐标
-        const DEFAULT_ZOOM = 4; // 初始缩放级别
+        const CHINA_CENTER = [118.066, 27.86]; // 中国几何中心坐标
+        const DEFAULT_ZOOM = 5; // 初始缩放级别
         const TARGET_ZOOM = 2; // 目标缩放级别（全球视图）
+        
+        /**
+         * 进度条控制函数
+         */
+        function updateProgress(percentage, statusText) {
+            const progressBar = document.getElementById('loading-progress-bar');
+            const statusElement = document.getElementById('loading-text');
+            
+            if (progressBar) {
+                progressBar.style.width = `${Math.min(100, Math.max(0, percentage))}%`;
+            }
+            
+            if (statusElement && statusText) {
+                statusElement.textContent = statusText;
+            }
+        }
+
+        function completeLoading() {
+            // 设置进度到100%
+            updateProgress(100, '加载完成');
+            
+            setTimeout(() => {
+                // 隐藏整个加载容器
+                const loadingContainer = document.getElementById('loading-container');
+                
+                if (loadingContainer) {
+                    loadingContainer.classList.add('complete');
+                }
+                
+                // 完全移除容器
+                setTimeout(() => {
+                    if (loadingContainer) loadingContainer.remove();
+                }, 800);
+            }, 200);
+        }
         
         /**
          * 从JSON缓存加载指标数据
@@ -330,13 +486,138 @@
             }
         }
 
+        // 全局变量
+        let dataWorker = null;
+        let messageIdCounter = 0;
+        let pendingMessages = new Map();
+        let currentTracksData = null;
+        let isProgressiveMode = false;
+
         /**
-         * 从JSON缓存加载轨迹数据（支持静态配置）
+         * 初始化 Data Worker
+         */
+        function initializeDataWorker() {
+            if (!dataWorker) {
+                try {
+                    dataWorker = new Worker('data-worker.js');
+                    dataWorker.addEventListener('message', handleWorkerMessage);
+                    console.log('✅ Data Worker 初始化成功');
+                } catch (error) {
+                    console.warn('⚠️ Data Worker 初始化失败，回退到主线程模式:', error);
+                    dataWorker = null;
+                }
+            }
+        }
+
+        /**
+         * 处理 Worker 消息
+         */
+        function handleWorkerMessage(e) {
+            const { type, messageId, data, success, error } = e.data;
+            
+            if (pendingMessages.has(messageId)) {
+                const { resolve, reject } = pendingMessages.get(messageId);
+                pendingMessages.delete(messageId);
+                
+                if (success) {
+                    resolve(data);
+                } else {
+                    reject(new Error(error));
+                }
+            }
+        }
+
+        /**
+         * 发送消息给 Worker
+         */
+        function sendWorkerMessage(type, data) {
+            return new Promise((resolve, reject) => {
+                if (!dataWorker) {
+                    reject(new Error('Data Worker 未初始化'));
+                    return;
+                }
+                
+                const messageId = ++messageIdCounter;
+                pendingMessages.set(messageId, { resolve, reject });
+                
+                dataWorker.postMessage({
+                    type,
+                    messageId,
+                    data
+                });
+            });
+        }
+
+        /**
+         * 使用 Worker 处理轨迹数据
+         */
+        async function processTrackDataWithWorker(arrayBuffer, isGzip = true, optimize = true) {
+            if (!dataWorker) {
+                // 回退到主线程处理
+                return processTrackDataMainThread(arrayBuffer, isGzip, optimize);
+            }
+            
+            try {
+                return await sendWorkerMessage('PROCESS_TRACK_DATA', {
+                    arrayBuffer,
+                    isGzip,
+                    optimize
+                });
+            } catch (error) {
+                console.warn('Worker 处理失败，回退到主线程:', error);
+                return processTrackDataMainThread(arrayBuffer, isGzip, optimize);
+            }
+        }
+
+        /**
+         * 主线程处理轨迹数据（回退方案）
+         */
+        function processTrackDataMainThread(arrayBuffer, isGzip = true, optimize = true) {
+            let data;
+            
+            if (isGzip) {
+                if (typeof pako !== 'undefined') {
+                    const compressedData = new Uint8Array(arrayBuffer);
+                    const decompressedData = pako.inflate(compressedData, { to: 'string' });
+                    data = JSON.parse(decompressedData);
+                } else {
+                    throw new Error('Pako 库未加载，无法解压 gzip 数据');
+                }
+            } else {
+                const textDecoder = new TextDecoder();
+                const jsonString = textDecoder.decode(arrayBuffer);
+                data = JSON.parse(jsonString);
+            }
+            
+            if (optimize) {
+                // 简化数据结构优化
+                const optimized = { ...data };
+                if (data.tracks) {
+                    Object.entries(data.tracks).forEach(([trackType, trackData]) => {
+                        if (trackData.points && trackData.points.features) {
+                            optimized.tracks[trackType].points.features = trackData.points.features.map(f => ({
+                                geometry: { coordinates: f.geometry.coordinates },
+                                properties: f.properties ? { timestamp: f.properties.timestamp } : {}
+                            }));
+                        }
+                    });
+                }
+                return optimized;
+            }
+            
+            return data;
+        }
+
+        /**
+         * 从JSON缓存加载轨迹数据（优化版本，支持渐进式加载）
          */
         async function loadTracksData() {
             console.log('正在从缓存加载轨迹数据...');
 
             try {
+                // 初始化 Worker
+                initializeDataWorker();
+                
                 // 先加载静态配置文件，确定数据结构
                 console.log('正在读取静态配置文件...');
                 const configResponse = await fetch(`cache/data_config.json?t=${Date.now()}`);
@@ -349,62 +630,184 @@
                 console.log('配置文件加载成功:', config);
 
                 if (config.data_type === 'single') {
-                    // 单个文件模式
-                    console.log('检测到单个文件模式...');
+                    // 单个文件模式（使用 Worker 优化）
+                    console.log('检测到单个文件模式，使用 Worker 优化处理...');
                     const response = await fetch(`cache/${config.single_file}?t=${Date.now()}`);
                     
                     if (!response.ok) {
                         throw new Error(`数据文件加载失败: ${response.status}`);
                     }
 
-                    const data = await response.json();
-                    console.log('成功加载单个轨迹文件:', {
+                    const arrayBuffer = await response.arrayBuffer();
+                    const isGzip = config.format === 'gzip' || config.single_file.endsWith('.gz');
+                    
+                    console.log('开始解压和优化数据...');
+                    const data = await processTrackDataWithWorker(arrayBuffer, isGzip, true);
+                    
+                    console.log('成功加载并优化单个轨迹文件:', {
                         trackTypes: Object.keys(data.tracks),
                         totalTracks: Object.values(data.tracks).reduce((sum, track) => sum + (track.points_count || 0), 0),
-                        bounds: data.bounds
+                        bounds: data.bounds,
+                        format: config.format || 'json',
+                        fileSize: (arrayBuffer.byteLength / 1024 / 1024).toFixed(2) + ' MB'
                     });
                     
                     return data;
                     
                 } else if (config.data_type === 'chunked') {
-                    // 分片文件模式
-                    console.log(`检测到分片文件模式，共 ${config.chunks.length} 个分片...`);
+                    // 分片文件模式（渐进式加载）
+                    console.log(`检测到分片文件模式，共 ${config.chunks.length} 个分片，启用渐进式加载...`);
+                    isProgressiveMode = true;
 
-                    // 并行加载所有分片
-                    const chunkPromises = config.chunks.map(async (chunkFile) => {
+                    let mergedData = {
+                        metrics: null,
+                        tracks: {},
+                        bounds: null,
+                        generated_at: null,
+                        version: null,
+                        chunked: true,
+                        total_chunks: config.chunks.length
+                    };
+
+                    // 渐进式加载每个分片
+                    for (let i = 0; i < config.chunks.length; i++) {
+                        const chunkFile = config.chunks[i];
+                        console.log(`正在加载分片 ${i + 1}/${config.chunks.length}: ${chunkFile}`);
+                        
                         const chunkResponse = await fetch(`cache/${chunkFile}?t=${Date.now()}`);
                         if (!chunkResponse.ok) {
                             throw new Error(`分片文件加载失败: ${chunkFile}`);
                         }
-                        return await chunkResponse.json();
-                    });
+                        
+                        let chunk;
+                        const isGzip = config.format === 'gzip' || chunkFile.endsWith('.gz');
+                        
+                        if (isGzip) {
+                            // 处理 gzip 分片文件
+                            console.log(`解压分片 ${i + 1}: ${chunkFile} (大小: ${chunkResponse.headers.get('content-length') || '未知'} 字节)`);
+                            try {
+                                const arrayBuffer = await chunkResponse.arrayBuffer();
+                                console.log(`ArrayBuffer 大小: ${arrayBuffer.byteLength} 字节`);
+                                chunk = await processTrackDataWithWorker(arrayBuffer, true, false); // 分片已经优化过了
+                                console.log(`解压完成，数据类型:`, typeof chunk, chunk ? Object.keys(chunk) : 'null');
+                                
+                                if (!chunk) {
+                                    throw new Error('Worker 返回空数据');
+                                }
+                            } catch (workerError) {
+                                console.warn('Worker 处理失败，尝试主线程处理:', workerError);
+                                const arrayBuffer = await chunkResponse.arrayBuffer();
+                                chunk = processTrackDataMainThread(arrayBuffer, true, false);
+                            }
+                        } else {
+                            // 处理 JSON 分片文件
+                            chunk = await chunkResponse.json();
+                        }
 
-                    const chunks = await Promise.all(chunkPromises);
-                    console.log('所有分片加载完成，开始合并数据...');
-
-                    // 合并分片数据
-                    const mergedData = {
-                        metrics: chunks[0].metrics,
-                        tracks: {},
-                        bounds: chunks[0].bounds,
-                        generated_at: chunks[0].generated_at,
-                        version: chunks[0].version,
-                        chunked: true,
-                        total_chunks: chunks.length
-                    };
-
-                    // 合并各个轨迹类型的数据
-                    for (const chunk of chunks) {
-                        Object.keys(chunk.tracks).forEach(trackType => {
-                            mergedData.tracks[trackType] = chunk.tracks[trackType];
+                        // 添加数据完整性检查
+                        console.log(`\n=== 处理分片 ${i + 1}/${config.chunks.length} ===`);
+                        console.log('分片数据结构:', {
+                            hasMetadata: !!chunk.metadata,
+                            hasMetrics: !!chunk.metrics,
+                            hasBounds: !!chunk.bounds,
+                            hasTracks: !!chunk.tracks,
+                            trackTypes: chunk.tracks ? Object.keys(chunk.tracks) : [],
+                            trackCounts: chunk.tracks ? Object.fromEntries(
+                                Object.keys(chunk.tracks).map(type => [
+                                    type, 
+                                    {
+                                        points: chunk.tracks[type]?.points_count || chunk.tracks[type]?.points?.features?.length || 0,
+                                        lines: chunk.tracks[type]?.lines_count || chunk.tracks[type]?.lines?.features?.length || 0
+                                    }
+                                ])
+                            ) : {}
                         });
+
+                        // 合并分片数据
+                        if (!chunk || !chunk.tracks) {
+                            console.warn(`分片 ${i + 1} 数据无效，跳过`);
+                            continue;
+                        }
+                        
+                        if (i === 0) {
+                            mergedData.metrics = chunk.metrics;
+                            mergedData.bounds = chunk.bounds;
+                            mergedData.generated_at = chunk.generated_at;
+                            mergedData.version = chunk.version;
+                        }
+                        
+                        Object.keys(chunk.tracks).forEach(trackType => {
+                            if (chunk.tracks[trackType]) {
+                                // 智能合并轨迹数据
+                                if (!mergedData.tracks[trackType]) {
+                                    // 如果轨迹类型还不存在，直接复制
+                                    mergedData.tracks[trackType] = chunk.tracks[trackType];
+                                    console.log(`新增轨迹类型: ${trackType}`);
+                                } else {
+                                    // 如果轨迹类型已存在，需要合并数据
+                                    const existingTrack = mergedData.tracks[trackType];
+                                    const newTrack = chunk.tracks[trackType];
+                                    
+                                    // 合并点数据
+                                    if (newTrack.points && newTrack.points.features) {
+                                        if (!existingTrack.points) {
+                                            existingTrack.points = { features: [] };
+                                        }
+                                        existingTrack.points.features.push(...newTrack.points.features);
+                                        existingTrack.points_count = existingTrack.points.features.length;
+                                        console.log(`合并 ${trackType} 点数据: +${newTrack.points.features.length} = ${existingTrack.points_count}`);
+                                    }
+                                    
+                                    // 合并线数据
+                                    if (newTrack.lines && newTrack.lines.features) {
+                                        if (!existingTrack.lines) {
+                                            existingTrack.lines = { features: [] };
+                                        }
+                                        existingTrack.lines.features.push(...newTrack.lines.features);
+                                        existingTrack.lines_count = existingTrack.lines.features.length;
+                                        console.log(`合并 ${trackType} 线数据: +${newTrack.lines.features.length} = ${existingTrack.lines_count}`);
+                                    }
+                                }
+                            }
+                        });
+
+                        // 每加载一个分片就渐进式渲染
+                        if (window.mapInstance) {
+                            console.log(`渐进式渲染分片 ${i + 1}...`);
+                            console.log(`当前合并数据包含轨迹类型:`, Object.keys(mergedData.tracks));
+                            
+                            // 统计当前数据量
+                            const currentStats = {};
+                            Object.entries(mergedData.tracks).forEach(([type, data]) => {
+                                currentStats[type] = {
+                                    points: data.points_count || 0,
+                                    lines: data.lines_count || 0
+                                };
+                            });
+                            console.log(`当前数据统计:`, currentStats);
+                            
+                            renderTracks(window.mapInstance, mergedData, true); // progressive = true
+                        }
+
+                        // 更新进度
+                        updateProgress(40 + Math.floor(30 * (i + 1) / config.chunks.length), 
+                                     `已加载并渲染分片 ${i + 1}/${config.chunks.length}`);
                     }
 
-                    console.log('成功合并分片数据:', {
+                    console.log('\n🎉 成功合并所有分片数据!');
+                    console.log('📊 最终数据统计:', {
                         trackTypes: Object.keys(mergedData.tracks),
-                        totalTracks: Object.values(mergedData.tracks).reduce((sum, track) => sum + (track.points_count || 0), 0),
+                        totalChunks: mergedData.total_chunks,
                         bounds: mergedData.bounds,
-                        totalChunks: mergedData.total_chunks
+                        trackCounts: Object.fromEntries(
+                            Object.keys(mergedData.tracks).map(type => [
+                                type, 
+                                {
+                                    points: mergedData.tracks[type]?.points_count || 0,
+                                    lines: mergedData.tracks[type]?.lines_count || 0
+                                }
+                            ])
+                        )
                     });
                     
                     return mergedData;
@@ -415,10 +818,60 @@
 
             } catch (error) {
                 console.error('加载轨迹数据失败:', error);
+                console.error('错误详情:', {
+                    message: error.message,
+                    stack: error.stack
+                });
                 return null;
             }
         }
         
+        /**
+         * 调试工具：检查数据完整性
+         */
+        function debugDataCompleteness(data) {
+            console.group('🔍 数据完整性检查');
+            
+            if (!data || !data.tracks) {
+                console.error('❌ 数据无效或缺少轨迹数据');
+                console.groupEnd();
+                return false;
+            }
+            
+            const trackTypes = Object.keys(data.tracks);
+            console.log('📋 轨迹类型:', trackTypes);
+            
+            let totalPoints = 0;
+            let totalLines = 0;
+            
+            trackTypes.forEach(trackType => {
+                const track = data.tracks[trackType];
+                const pointCount = track.points_count || (track.points?.features?.length || 0);
+                const lineCount = track.lines_count || (track.lines?.features?.length || 0);
+                
+                console.log(`${trackType}:`, {
+                    points: pointCount,
+                    lines: lineCount,
+                    hasPointsData: !!(track.points && track.points.features),
+                    hasLinesData: !!(track.lines && track.lines.features)
+                });
+                
+                totalPoints += pointCount;
+                totalLines += lineCount;
+            });
+            
+            console.log('📊 总计:', {
+                totalPoints,
+                totalLines,
+                trackTypes: trackTypes.length,
+                isChunked: data.chunked || false,
+                totalChunks: data.total_chunks || 1
+            });
+            
+            console.groupEnd();
+            return true;
+        }
+
         /**
          * 更新图例标题显示
          */
@@ -464,76 +917,213 @@
         }
         
         /**
-         * 渲染轨迹数据到地图
+         * 渲染轨迹数据到地图（优化版本，支持虚拟化渲染）
          */
-        function renderTracks(map, tracksData) {
-            console.log('开始渲染轨迹...');
+        function renderTracks(map, tracksData, progressive = false) {
+            console.log('开始用 deck.gl 渲染轨迹...', { progressive });
+            
+            if (!tracksData || !tracksData.tracks) {
+                console.error('轨迹数据无效:', tracksData);
+                return;
+            }
+
+            try {
+                const layers = [];
+                const currentZoom = map.getZoom();
+                const mapBounds = map.getBounds();
+                
+                // 生成唯一标识符用于区分分片
+                const renderSessionId = progressive ? `chunk_${Date.now()}_${Math.random().toString(36).substr(2, 9)}` : 'main';
+                
+                // 获取视窗边界
+                const bounds = {
+                    west: mapBounds.getWest(),
+                    east: mapBounds.getEast(),
+                    south: mapBounds.getSouth(),
+                    north: mapBounds.getNorth()
+                };
+                
+                console.log('当前缩放级别:', currentZoom, '视窗边界:', bounds, '渲染会话:', renderSessionId);
             
             Object.entries(tracksData.tracks).forEach(([trackType, trackData]) => {
-                if (!trackData.files || trackData.files.length === 0) {
-                    console.log(`跳过 ${trackType}: 无数据`);
+                if (!trackData) {
+                    console.warn(`轨迹类型 ${trackType} 数据为空`);
                     return;
                 }
-
-                console.log(`渲染 ${trackType}: ${trackData.points_count || 0} 个点, ${trackData.lines_count || 0} 条线`);
-
-                const color = trackData.color;
-                const displayType = trackData.display_type;
-
-                if (displayType === 'points' && trackData.points.features.length > 0) {
-                    // 添加点数据源和图层
-                    map.addSource(`${trackType}-points`, {
-                        type: 'geojson',
-                        data: trackData.points
+                
+                const color = trackData.color || '#3b82f6';
+                const displayType = trackData.display_type || '';
+                const colorRgb = colorToRgb(color);
+                
+                console.log(`处理轨迹类型: ${trackType}, 颜色: ${color}, 显示类型: ${displayType}`);
+                
+                // 渲染点数据
+                if (displayType === 'points' && trackData.points && Array.isArray(trackData.points.features)) {
+                    let pointFeatures = trackData.points.features;
+                    
+                    // 虚拟化渲染：根据缩放级别和视窗过滤点
+                    if (currentZoom < 6) {
+                        // 低缩放级别时进行采样以提高性能
+                        const sampleRate = currentZoom < 4 ? 0.05 : 0.2;
+                        // 使用确定性采样而不是随机采样，保证结果一致
+                        pointFeatures = pointFeatures.filter((_, index) => 
+                            (index % Math.ceil(1 / sampleRate)) === 0
+                        );
+                        console.log(`${trackType} 点数据采样: ${pointFeatures.length}/${trackData.points.features.length}`);
+                    }
+                    
+                    // 视窗过滤
+                    pointFeatures = pointFeatures.filter(feature => {
+                        if (!feature || !feature.geometry || !feature.geometry.coordinates) return false;
+                        const coords = feature.geometry.coordinates;
+                        if (!Array.isArray(coords) || coords.length < 2) return false;
+                        const [lng, lat] = coords;
+                        if (typeof lng !== 'number' || typeof lat !== 'number') return false;
+                        return lng >= bounds.west && lng <= bounds.east && 
+                               lat >= bounds.south && lat <= bounds.north;
                     });
                     
-                    map.addLayer({
-                        id: `${trackType}-points-layer`,
-                        type: 'circle',
-                        source: `${trackType}-points`,
-                        paint: {
-                            'circle-radius': [
-                                'interpolate', ['linear'], ['zoom'],
-                                2, 1,
-                                12, 2,
-                                18, 5
-                            ],
-                            'circle-color': color,
-                            'circle-opacity': 0.8
-                        }
+                    if (pointFeatures.length > 0) {
+                        const layerId = progressive ? 
+                            `${trackType}-points-${renderSessionId}` : 
+                            `${trackType}-points-layer`;
+                            
+                        layers.push(new deck.ScatterplotLayer({
+                            id: layerId,
+                            data: pointFeatures,
+                            getPosition: f => Array.isArray(f.geometry.coordinates) ? f.geometry.coordinates : [0,0],
+                            getRadius: Math.max(1000, 5000 / Math.pow(2, currentZoom - 2)),
+                            getFillColor: colorRgb,
+                            opacity: 1,
+                            radiusMinPixels: 0.6,
+                            radiusMaxPixels: 1.7,
+                            updateTriggers: {
+                                getRadius: currentZoom,
+                                getFillColor: color
+                            },
+                            transitions: {
+                                getRadius: 300,
+                                getFillColor: 300
+                            },
+                            pickable: false // 禁用点击以提高性能
+                        }));
+                        console.log(`✅ ${trackType} 渲染 ${pointFeatures.length} 个点`);
+                    }
+                }
+                
+                // 渲染线数据
+                if (displayType === 'lines' && trackData.lines && Array.isArray(trackData.lines.features)) {
+                    let lineFeatures = trackData.lines.features;
+                    
+                    // 视窗过滤线段
+                    lineFeatures = lineFeatures.filter(feature => {
+                        if (!feature || !feature.geometry || !feature.geometry.coordinates) return false;
+                        const coords = feature.geometry.coordinates;
+                        if (!Array.isArray(coords)) return false;
+                        // 检查线段是否与视窗相交
+                        return coords.some(coord => {
+                            if (!Array.isArray(coord) || coord.length < 2) return false;
+                            const [lng, lat] = coord;
+                            if (typeof lng !== 'number' || typeof lat !== 'number') return false;
+                            return lng >= bounds.west && lng <= bounds.east && 
+                                   lat >= bounds.south && lat <= bounds.north;
+                        });
                     });
                     
-                } else if (displayType === 'lines' && trackData.lines.features.length > 0) {
-                    // 添加线数据源和图层
-                    map.addSource(`${trackType}-lines`, {
-                        type: 'geojson',
-                        data: trackData.lines,
-                        lineMetrics: true // 启用线段指标，有助于跨日界线渲染
-                    });
-                    
-                    map.addLayer({
-                        id: `${trackType}-lines-layer`,
-                        type: 'line',
-                        source: `${trackType}-lines`,
-                        layout: {
-                            'line-join': 'round',
-                            'line-cap': 'round'
-                        },
-                        paint: {
-                            'line-color': color,
-                            'line-width': [
-                                'interpolate', ['linear'], ['zoom'],
-                                2, 1,
-                                8, 2,
-                                12, 3
-                            ],
-                            'line-opacity': 0.9
-                        }
-                    });
+                    if (lineFeatures.length > 0) {
+                        const layerId = progressive ? 
+                            `${trackType}-lines-${renderSessionId}` : 
+                            `${trackType}-lines-layer`;
+                            
+                        layers.push(new deck.PathLayer({
+                            id: layerId,
+                            data: lineFeatures,
+                            getPath: f => f.geometry.coordinates,
+                            getWidth: Math.max(2, 8 / Math.pow(2, Math.max(0, currentZoom - 6))),
+                            getColor: colorRgb,
+                            opacity: 0.9,
+                            widthMinPixels: 2,
+                            widthMaxPixels: 10,
+                            capRounded: true,
+                            jointRounded: true,
+                            updateTriggers: {
+                                getWidth: currentZoom,
+                                getColor: color
+                            },
+                            transitions: {
+                                getWidth: 300,
+                                getColor: 300
+                            },
+                            pickable: false // 禁用点击以提高性能
+                        }));
+                        console.log(`✅ ${trackType} 渲染 ${lineFeatures.length} 条线段`);
+                    }
                 }
             });
+
+            console.log(`总共创建了 ${layers.length} 个图层`);
+
+            // 管理 deck.gl 图层
+            if (!window.deckOverlay) {
+                window.deckOverlay = new deck.MapboxOverlay({ 
+                    layers,
+                    // 性能优化配置
+                    getTooltip: null, // 禁用 tooltip 以提高性能
+                    pickingRadius: 0  // 禁用点击事件以提高性能
+                });
+                map.addControl(window.deckOverlay);
+                console.log('✅ 新建 deck.gl overlay');
+            } else {
+                // 渐进式更新或完全更新
+                if (progressive) {
+                    // 渐进式模式：累积添加图层，避免覆盖
+                    const existingLayers = (window.deckOverlay && window.deckOverlay.props && window.deckOverlay.props.layers) || [];
+                    
+                    // 使用更智能的图层合并策略
+                    const existingLayerMap = new Map();
+                    existingLayers.forEach(layer => {
+                        existingLayerMap.set(layer.id, layer);
+                    });
+                    
+                    // 添加或更新新图层
+                    layers.forEach(layer => {
+                        existingLayerMap.set(layer.id, layer);
+                    });
+                    
+                    const allLayers = Array.from(existingLayerMap.values());
+                    window.deckOverlay.setProps({ layers: allLayers });
+                    
+                    console.log(`✅ 渐进式更新图层: ${existingLayers.length} + ${layers.length} = ${allLayers.length} 个图层`);
+                } else {
+                    // 完全替换图层
+                    window.deckOverlay.setProps({ layers });
+                    console.log('✅ 完全更新图层');
+                }
+            }
             
-            console.log('✅ 轨迹渲染完成');
+            console.log('✅ deck.gl 轨迹渲染完成');
+            
+            } catch (error) {
+                console.error('渲染轨迹时发生错误:', error);
+                console.error('错误详情:', {
+                    message: error.message,
+                    stack: error.stack,
+                    tracksData: tracksData ? Object.keys(tracksData) : 'null'
+                });
+            }
+        }
+
+        // 颜色字符串转 RGB 数组
+        function colorToRgb(hex, alpha=255) {
+            // 支持 #rrggbb 或 rgb()
+            if (hex.startsWith('#')) {
+                const bigint = parseInt(hex.slice(1), 16);
+                return [(bigint>>16)&255, (bigint>>8)&255, bigint&255, alpha];
+            } else if (hex.startsWith('rgb')) {
+                const arr = hex.match(/\d+/g).map(Number);
+                return [...arr, alpha];
+            }
+            return [59,130,246,alpha]; // 默认蓝色
         }
         
         /**
@@ -553,8 +1143,13 @@
             }, 30);
         }
 
+        // 初始化进度条
+        updateProgress(0, '正在初始化...');
+
         // 初始化地图
-        mapboxgl.accessToken = '';
+        mapboxgl.accessToken = window.CONFIG.MAPBOX_ACCESS_TOKEN;
+        
+        updateProgress(10, '正在加载地图...');
         
         const map = new mapboxgl.Map({
             container: 'map',
@@ -562,29 +1157,53 @@
             center: CHINA_CENTER,
             zoom: DEFAULT_ZOOM,
             minZoom: 2,    // 可以缩小到全球视图
-            maxZoom: 12    // 限制最大放大倍数
+            maxZoom: 11,   // 限制最大放大倍数
+            projection: 'mercator' // 初始化时就设置为平面投影，避免后期切换造成闪烁
         });
 
         // 地图加载完成后的处理
         map.on('load', function() {
+            updateProgress(20, '地图加载完成，开始获取数据...');
+            
+            // 保存地图实例到全局变量，供渐进式加载使用
+            window.mapInstance = map;
+            
             // 并行加载数据
             Promise.all([
-                loadMetrics(),
-                loadTracksData()
+                loadMetrics().then(result => {
+                    updateProgress(40, '指标数据加载完成...');
+                    return result;
+                }),
+                loadTracksData().then(result => {
+                    updateProgress(70, '轨迹数据加载完成...');
+                    return result;
+                })
             ]).then(([metrics, tracksData]) => {
+                updateProgress(80, '正在渲染轨迹...');
+                
                 // 更新UI显示
                 updateLegendTitle(metrics);
                 
                 // 渲染轨迹数据
                 if (tracksData) {
+                    // 在渲染前进行数据完整性检查
+                    console.log('📍 准备渲染轨迹数据...');
+                    debugDataCompleteness(tracksData);
+                    
                     renderTracks(map, tracksData);
+                    currentTracksData = tracksData; // 保存当前轨迹数据
                 }
                 
-                // 调整地图视图
-                adjustMapView(map, tracksData);
+                updateProgress(95, '正在完成最后设置...');
+                
+                // 完成加载
+                setTimeout(() => {
+                    completeLoading();
+                }, 500);
                 
             }).catch(error => {
                 console.error('数据加载失败:', error);
+                updateProgress(100, '加载失败');
                 
                 // 显示错误状态
                 const titleEl = document.querySelector('#legend-title');
@@ -592,7 +1211,36 @@
                     titleEl.querySelector('span').innerHTML = '<span style="color:#ef4444;">加载失败</span>';
                     titleEl.querySelector('div').textContent = '请检查网络连接';
                 }
+                
+                // 延迟隐藏进度条
+                setTimeout(() => {
+                    completeLoading();
+                }, 2000);
             });
+        });
+
+        // 添加地图交互监听器，实现动态虚拟化渲染
+        let renderTimeout;
+        map.on('moveend', function() {
+            // 防抖处理，避免频繁重渲染
+            if (renderTimeout) clearTimeout(renderTimeout);
+            renderTimeout = setTimeout(() => {
+                if (currentTracksData && window.deckOverlay) {
+                    console.log('地图移动完成，重新渲染可见区域轨迹...');
+                    renderTracks(map, currentTracksData);
+                }
+            }, 200);
+        });
+
+        map.on('zoomend', function() {
+            // 防抖处理，避免频繁重渲染
+            if (renderTimeout) clearTimeout(renderTimeout);
+            renderTimeout = setTimeout(() => {
+                if (currentTracksData && window.deckOverlay) {
+                    console.log('缩放完成，根据新缩放级别重新渲染轨迹...');
+                    renderTracks(map, currentTracksData);
+                }
+            }, 200);
         });
     </script>
 </body>
